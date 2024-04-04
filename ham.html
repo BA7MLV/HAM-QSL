@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>开发页面</title>
+  <style>
+    body {
+      background-color: #F2F1F6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      height: 38vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #F2F1F6;
+    }
+
+    .card-container {
+      width: 90%;
+      max-width: 90%;
+      height: auto;
+      position: relative;
+      perspective: 1000px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .front-card,
+    .back-card {
+      width: 100%;
+      height: auto;
+      position: absolute;
+      box-shadow: 0px 2px 12.7px rgba(0, 0, 0, 0.25);
+      border-radius: 14px;
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      backface-visibility: hidden;
+    }
+
+    .front-card {
+      transform: rotateY(0deg);
+    }
+
+    .back-card {
+      transform: rotateY(180deg);
+    }
+
+    .card-container.flip .front-card {
+      transform: rotateY(-180deg);
+    }
+
+    .card-container.flip .back-card {
+      transform: rotateY(0deg);
+    }
+
+    .background-square {
+      width: 90%;
+      height: 15vh;
+      background: white;
+      border-radius: 14px;
+      position: relative;
+      margin: 10px;
+    }
+
+    .call-sign {
+      position: relative;
+      top: 16px;
+      left: 17px;
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .small-call-sign {
+      color: black;
+      font-size: 24px;
+      font-weight: 700;
+      word-wrap: break-word;
+    }
+
+    .large-call-sign {
+      color: black;
+      font-size: 36px;
+      font-family: 'Arial Rounded MT Bold', sans-serif;
+      font-weight: 400;
+      word-wrap: break-word;
+    }
+
+    .query-button {
+      width: 120px;
+      height: 48px;
+      background: black;
+      border-radius: 35px;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 18px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-weight: 700;
+      text-align: center;
+      line-height: 48px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .call-sign-container {
+      width: 413px;
+      height: 109px;
+      position: relative;
+      margin: 0 auto;
+      position: relative; /* 添加相对定位 */
+    }
+
+    .label {
+      color: black;
+      font-size: 24px;
+      font-family: 'Noto Sans SC';
+      font-weight: 700;
+      word-wrap: break-word;
+    }
+
+    .call-sign-value {
+      color: black;
+      font-size: 36px;
+      font-family: 'Arial Rounded MT Bold';
+      font-weight: 400;
+      word-wrap: break-word;
+    }
+
+    .test1 {
+      color: black;
+      font-size: 32px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-weight: 700;
+      word-wrap: break-word;
+      width: 90%;
+      max-width: 90%;
+      text-align: left;
+      margin: 10px auto;
+    }
+
+    .attached-image {
+  position: absolute;
+  right: 10px; /* 根据需要调整距离 */
+  top: 200%; /* 可以根据需要调整垂直位置 */
+  transform: translateY(-50%) rotate(15deg) translateZ(0); /* 保持旋转效果并垂直居中 */
+  z-index: 1; /* 确保图片在其他内容之上 */
+}
+.rotated-image {
+  position: absolute;
+  right:20px; /* 根据需要调整距离 */
+  top: 50%; /* 垂直居中于 .call-sign-container */
+  transform: translateY(-50%) rotate(15deg);
+  transform-origin: 0 0;
+  z-index: 1;
+  width: 175px; /* 设置图片的宽度为 155px */
+  height: 175px; /* 设置图片的高度为 155px */
+}
+/* 这段CSS代码定义了一个包含邮戳的容器的样式 */
+
+
+.stamp-container {
+  position: absolute;
+  right: 20px; /* 设置容器右边缘距离为20像素 */
+  top: 10%; /* 设置容器顶部边缘距离为其父元素高度的10% */
+  transform: translateY(-50%); /* 将容器向上移动自身高度的50%，使其垂直居中 */
+  animation: stampAnimation 4s cubic-bezier(0.42, 0, 0.58, 1); /* 应用名为stampAnimation的动画，持续时间为1秒，动画缓动方式为ease-in-out */
+}
+
+.rotated-image {
+  width: 175px; /* 设置旋转图像的宽度为175像素 */
+  height: 175px; /* 设置旋转图像的高度为175像素 */
+  transform: rotate(15deg); /* 将图像顺时针旋转15度 */
+  transform-origin: 50% 50%; /* 设置旋转的原点为图像的中心 */
+  z-index: 1; /* 设置图像的层级为1，使其位于其他元素之上 */
+}
+
+@keyframes stampAnimation {
+  0% {
+    transform: translateY(-50%) scale(0.8) rotate(-30deg); /* 在动画开始时，将容器向上移动自身高度的50%，缩小80%，逆时针旋转30度 */
+    opacity: 0; /* 在动画开始时，将容器的透明度设置为0，使其完全透明 */
+  }
+  50% {
+    transform: translateY(-50%) scale(1.2) rotate(30deg); /* 在动画进行到50%时，将容器向上移动自身高度的50%，放大120%，顺时针旋转30度 */
+  }
+  100% {
+    transform: translateY(-50%) rotate(0deg); /* 在动画结束时，将容器向上移动自身高度的50%，旋转角度恢复到初始的15度 */
+    opacity: 1; /* 在动画结束时，将容器的透明度设置为1，使其完全不透明 */
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card-container" onclick="this.classList.toggle('flip')">
+      <img class="front-card" src="https://img2.imgtp.com/2024/04/02/4RQmk4a0.png" alt="Front Card">
+      <canvas class="back-card" id="myCanvas" width="600" height="400"alt="Back Card"></canvas>
+      <!-- 采用canvas生成 -->
+    </div>
+  </div>
+
+  <div class="background-square">
+    <div class="call-sign-container" style="position: relative;"> <!-- 添加了样式 -->
+      <div class="call-sign">
+        <span class="label">您好！<br></span>
+        <span class="call-sign-value"></span>
+      </div>
+      <!-- 添加图片标签 -->
+    <div class="stamp-container">
+  <img class="rotated-image" src="https://img2.imgtp.com/2024/04/04/Vn5ZumnH.png" alt="Rotated Image">
+</div>
+    </div>
+  </div>
+
+  <div class="test1">通联数据</div>
+
+  <div class="background-square">
+    <div class="call-sign-container">
+      <div class="call-sign">
+        <span class="label">详情<br></span>
+        <span class="call-sign-value" onclick="flipCard(document.querySelector('.card-container'))">点击查看</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="background-square">
+    <div class="call-sign-container">
+      <div class="call-sign">
+        <span class="label">时间<br></span>
+        <span id='time' class="call-sign-value">S</span>
+      </div>
+    </div>
+  </div>
+  
+</body>
+
+
+<script>
+function displayCurrentTimestamp() {
+  // 获取当前时间的时间戳（毫秒）
+  const timestamp = Date.now();
+
+  // 找到页面中id为'time'的元素
+  const timeElement = document.getElementById('time');
+
+  // 如果找到了元素，更新其内容为当前的时间戳
+  if (timeElement) {
+    timeElement.textContent = timestamp;
+  }
+}
+
+// 当文档加载完毕时，执行显示时间戳的操作
+document.addEventListener('DOMContentLoaded', (event) => {
+  displayCurrentTimestamp();
+});
+
+
+
+function updateCallSign() {
+  // 获取URL中的callsign参数
+  const urlParams = new URLSearchParams(window.location.search);
+  const callsign = urlParams.get('callsign');
+
+  // 找到页面中class为"call-sign-value"的元素
+  const callSignElement = document.querySelector('.call-sign-value');
+
+  // 根据callsign参数的值更新元素内容
+  if (callSignElement) {
+    if (callsign) {
+      // 如果callsign参数存在，则转换为大写并设置为元素内容
+      callSignElement.textContent = callsign.toUpperCase();
+    } else {
+      // 如果callsign参数不存在，则设置为'/'
+      callSignElement.textContent = '/';
+    }
+  }
+}
+
+// 当文档加载完毕时，执行更新操作
+document.addEventListener('DOMContentLoaded', (event) => {
+  updateCallSign();
+});
+// 获取画布元素
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+// 加载背景图像
+var backgroundImage = new Image();
+backgroundImage.src = "https://img2.imgtp.com/2024/04/04/zZHl00x7.png";
+// 在画布上绘制背景图像
+backgroundImage.onload = function() {
+    ctx.drawImage(backgroundImage, 0, 0);
+
+    // 在画布上添加文本
+    ctx.font = "22px Noto Sans SC";
+    ctx.fillStyle = "black";
+
+    ctx.fillText(getURLParameters().callsign || '/', 465, 95);
+    ctx.fillText(getURLParameters().DATE || '/', 40, 170);
+    ctx.fillText(getURLParameters().TIME || '/', 260, 170);
+    ctx.fillText(getURLParameters().callsign || '/', 465, 95);
+    ctx.fillText(getURLParameters().OP || '/', 465, 170);
+    ctx.fillText(getURLParameters().FERQ || '/', 40, 245);
+    ctx.fillText(getURLParameters().MODE || '/', 170, 245);
+    ctx.fillText(getURLParameters().RIG || '/', 280, 245);
+    ctx.fillText(getURLParameters().ANT || '/', 375, 245);
+    ctx.fillText(getURLParameters().RST || '/', 40, 320);
+    ctx.fillText(getURLParameters().WATTS || '/', 170, 320);
+    ctx.fillText(getURLParameters().RMKS || '/', 280, 320);
+}
+
+  // 翻转卡片函数
+  function flipCard(cardContainer) {
+      cardContainer.classList.toggle('flip');
+    }
+
+
+    function getURLParameters() {
+  const urlParams = {};
+  const queryString = window.location.search.substring(1); // 获取查询字符串并去掉第一个字符'?'
+
+  // 将查询字符串分割成键值对数组
+  const keyValuePairs = queryString.split('&');
+
+  // 遍历每个键值对
+  keyValuePairs.forEach(pair => {
+    const [key, value] = pair.split('='); // 分割键和值
+    urlParams[key] = decodeURIComponent(value).toUpperCase(); // 解码值并转换为大写，然后存储到urlParams对象中
+  });
+
+  return urlParams;
+}
+
+// 使用函数并打印结果
+const params = getURLParameters();
+console.log(params);
+
+
+
+
+</script>
+</html>
+
+
+
+
+
