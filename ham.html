@@ -206,7 +206,8 @@
 <body>
   <div class="container">
     <div class="card-container" onclick="this.classList.toggle('flip')">
-      <img class="front-card" src="https://img2.imgtp.com/2024/04/02/4RQmk4a0.png" alt="Front Card">
+    <img id="dynamicImage" alt="Dynamic Image" class="front-card"  alt="Front Card"> 
+      <!-- <img class="front-card" src="https://img2.imgtp.com/2024/04/02/4RQmk4a0.png" alt="Front Card"> -->
       <canvas class="back-card" id="myCanvas" width="600" height="400"alt="Back Card"></canvas>
       <!-- 采用canvas生成 -->
     </div>
@@ -351,10 +352,42 @@ console.log(params);
 
 
 
+// 预先定义不同style值对应的图片链接
+const images = {
+  '1': 'https://img2.imgtp.com/2024/04/02/4RQmk4a0.png',//深圳钢结构博物馆
+  '2': 'https://img2.imgtp.com/2024/04/05/ytfqBu9u.png'//测试数据
+  // 可以继续添加更多的style值和对应的图片链接
+};
+
+function updateImageSrc() {
+  // 解析URL的查询参数
+  const urlParams = new URLSearchParams(window.location.search);
+  // 获取'style'参数的值
+  const style = urlParams.get('STYLE');
+
+  // 根据'style'参数的值来设置图片的src属性
+  const imageElement = document.getElementById('dynamicImage');
+  if (style && images.hasOwnProperty(style)) {
+    imageElement.src = images[style];
+  } else {
+    // 如果没有有效的style参数或者参数值不匹配，设置默认图片
+    imageElement.src = 'https://img2.imgtp.com/2024/04/02/4RQmk4a0.png'; 
+  }
+}
+
+// 当页面加载完成后，调用updateImageSrc函数
+window.onload = updateImageSrc;
+
+// 监听URL的变化
+window.addEventListener('popstate', function() {
+  // 当URL变化时，重新加载图片
+  updateImageSrc();
+});
+
+// 由于popstate事件不会在页面首次加载时触发，我们需要额外设置一个事件监听器来处理这种情况
+window.addEventListener('load', function() {
+  // 页面加载完成后，模拟一个popstate事件来触发更新
+  history.pushState(null, null, window.location.href);
+});
 </script>
 </html>
-
-
-
-
-
