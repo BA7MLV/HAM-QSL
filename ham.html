@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -232,7 +233,7 @@
     <div class="call-sign-container">
       <div class="call-sign">
         <span class="label">详情<br></span>
-        <span class="call-sign-value" onclick="flipCard(document.querySelector('.card-container'))">点击查看</span>
+        <span class="call-sign-value" style="color: #17A9EA;" onclick="flipCard(document.querySelector('.card-container'))">点击查看></span>
       </div>
     </div>
   </div>
@@ -245,11 +246,40 @@
       </div>
     </div>
   </div>
-  
+  <p>监修中</p>
 </body>
 
 
 <script>
+function updateCallSignAndTitle() {
+  // 获取URL中的callsign参数
+  const urlParams = new URLSearchParams(window.location.search);
+  const callsign = urlParams.get('callsign');
+
+  // 找到页面中class为"call-sign-value"的元素
+  const callSignElement = document.querySelector('.call-sign-value');
+  // 获取页面标题元素
+  const titleElement = document.querySelector('title');
+
+  // 根据callsign参数的值更新元素内容
+  if (callSignElement && titleElement) {
+    if (callsign) {
+      // 如果callsign参数存在，则转换为大写并设置为元素内容和网页标题
+      callSignElement.textContent = callsign.toUpperCase();
+      titleElement.textContent = callsign.toUpperCase();
+    } else {
+      // 如果callsign参数不存在，则设置为'/'，并保持网页标题不变
+      callSignElement.textContent = '/';
+      titleElement.textContent = '默认标题'; // 设置一个默认的网页标题
+    }
+  }
+}
+
+// 当文档加载完毕时，执行更新操作
+document.addEventListener('DOMContentLoaded', (event) => {
+  updateCallSignAndTitle();
+});
+
 function displayCurrentTimestamp() {
   // 获取当前时间的时间戳（毫秒）
   const timestamp = Date.now();
@@ -320,7 +350,7 @@ backgroundImage.onload = function() {
     ctx.fillText(getURLParameters().ANT || '/', 375, 245);
     ctx.fillText(getURLParameters().RST || '/', 40, 320);
     ctx.fillText(getURLParameters().WATTS || '/', 170, 320);
-    ctx.fillText(getURLParameters().RMKS || '/', 280, 320);
+    ctx.fillText(getURLParameters().RMKS || '/', 265, 320);
 }
 
   // 翻转卡片函数
