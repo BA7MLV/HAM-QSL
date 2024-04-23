@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -234,7 +235,7 @@
     <div class="call-sign-container">
       <div class="call-sign">
         <span class="label">详情<br></span>
-        <span class="call-sign-value" style="color: #17A9EA;" onclick="flipCard(document.querySelector('.card-container'))">点击查看></span>
+        <span class="call-sign-value" style="color: #17A9EA;" onclick="flipCard(document.querySelector('.card-container'));">点击查看></span>
       </div>
     </div>
   </div>
@@ -242,8 +243,8 @@
   <div class="background-square">
     <div class="call-sign-container">
       <div class="call-sign">
-        <span class="label">时间<br></span>
-        <span id='time' class="call-sign-value">S</span>
+        <span class="label">LOTW<br></span>
+        <span id='lotw' class="call-sign-value" style="color: #17A9EA; cursor: pointer;">点击跳转></span>
       </div>
     </div>
   </div>
@@ -251,6 +252,28 @@
 
 
 <script>
+
+// 获取URL中的lotw参数
+const urlParams = new URLSearchParams(window.location.search);
+const lotw = urlParams.get('lotw');
+
+// 将lotw的值赋给id为"lotw"的span元素
+const spanElement = document.getElementById('lotw');
+if (lotw) {
+  spanElement.textContent = '点击跳转>';
+} else {
+  spanElement.textContent = '无记录';
+}
+
+// 点击span元素时进行跳转
+spanElement.addEventListener('click', () => {
+  if (lotw) {
+    const encodedLotw = encodeURIComponent(lotw);
+    const url = 'https://' + encodedLotw;
+    window.location.href = url;
+  }
+});
+
 function updateCallSignAndTitle() {
   // 获取URL中的callsign参数
   const urlParams = new URLSearchParams(window.location.search);
