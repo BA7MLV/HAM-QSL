@@ -253,26 +253,30 @@
 
 <script>
 
-// 获取URL中的lotw参数
-const urlParams = new URLSearchParams(window.location.search);
-const lotw = urlParams.get('lotw');
+// 正则表达式匹配lotw参数的值，假设lotw参数后面没有跟随&符号
+const lotwRegex = /lotw=([^&]+)/;
+const match = lotwRegex.exec(window.location.search);
+
+// 如果找到匹配项，则提取lotw参数的值
+const lotw = match ? match[1] : null;
 
 // 将lotw的值赋给id为"lotw"的span元素
 const spanElement = document.getElementById('lotw');
 if (lotw) {
-  spanElement.textContent = '点击跳转>';
+    // 直接显示lotw参数的值，因为lotw参数的值是一个完整的URL
+    spanElement.textContent = '点击跳转>';
 } else {
-  spanElement.textContent = '无记录';
+    spanElement.textContent = '无记录';
 }
 
 // 点击span元素时进行跳转
 spanElement.addEventListener('click', () => {
-  if (lotw) {
-    const encodedLotw = encodeURIComponent(lotw);
-    const url = 'https://' + encodedLotw;
-    window.location.href = url;
-  }
+    if (lotw) {
+        // 直接使用lotw参数的值作为跳转的URL
+        window.location.href = lotw;
+    }
 });
+
 
 function updateCallSignAndTitle() {
   // 获取URL中的callsign参数
