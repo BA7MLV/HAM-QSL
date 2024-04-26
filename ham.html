@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -366,7 +368,7 @@ backgroundImage.onload = function() {
 
     ctx.fillText(getURLParameters().callsign || '/', 465, 95);
     ctx.fillText(getURLParameters().DATE || '/', 40, 170);
-    ctx.fillText(getURLParameters().TIME || '/', 260, 170);
+    ctx.fillText(getURLParameters().TIME || '/', 240, 170);
     ctx.fillText(getURLParameters().callsign || '/', 465, 95);
     ctx.fillText(getURLParameters().OP || '/', 465, 170);
     ctx.fillText(getURLParameters().FERQ || '/', 40, 245);
@@ -409,7 +411,7 @@ console.log(params);
 
 // 预先定义不同style值对应的图片链接
 const images = {
-  '1': 'https://s2.loli.net/2024/04/26/KdoVSGL3lIaDZ1c.png',//深圳钢结构博物馆
+  '1': 'https://s2.loli.net/2024/04/26/tMOuXnRyqmgLEIY.png',//深圳钢结构博物馆
   '2': 'https://img2.imgtp.com/2024/04/05/ytfqBu9u.png'//测试数据
   // 可以继续添加更多的style值和对应的图片链接
 };
@@ -426,7 +428,7 @@ function updateImageSrc() {
     imageElement.src = images[style];
   } else {
     // 如果没有有效的style参数或者参数值不匹配，设置默认图片
-    imageElement.src = 'https://s2.loli.net/2024/04/26/KdoVSGL3lIaDZ1c.png'; 
+    imageElement.src = 'https://img2.imgtp.com/2024/04/02/4RQmk4a0.png'; 
   }
 }
 
