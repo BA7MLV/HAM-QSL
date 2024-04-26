@@ -269,13 +269,14 @@ if (lotw) {
     spanElement.textContent = '无记录';
 }
 
-// 点击span元素时进行跳转
-spanElement.addEventListener('click', () => {
+  // 点击span元素时进行跳转
+  spanElement.addEventListener('click', () => {
     if (lotw) {
-        // 直接使用lotw参数的值作为跳转的URL
-        window.location.href = lotw;
+      // 直接使用lotw参数的值作为跳转的URL
+      // 确保跳转的是一个完整的URL，而不是当前URL的子路径
+      window.location.href = 'https://' + lotw;
     }
-}); 
+  });
 
 
 function updateCallSignAndTitle() {
