@@ -254,28 +254,36 @@
 <script>
 
 // 正则表达式匹配lotw参数的值，假设lotw参数后面没有跟随&符号
-const lotwRegex = /lotw=([^&]+)/;
-const match = lotwRegex.exec(window.location.search);
+    // 正则表达式匹配lotw参数的值，假设lotw参数后面可能跟随&符号
+    const lotwRegex = /lotw=([^&]+)/;
+    const match = lotwRegex.exec(window.location.search);
 
-// 如果找到匹配项，则提取lotw参数的值
-const lotw = match ? match[1] : null;
+    // 如果找到匹配项，则提取lotw参数的值
+    const lotw = match ? match[1] : null;
 
-// 将lotw的值赋给id为"lotw"的span元素
-const spanElement = document.getElementById('lotw');
-if (lotw) {
-    // 直接显示lotw参数的值，因为lotw参数的值是一个完整的URL
-    spanElement.textContent = '点击跳转>';
-} else {
-    spanElement.textContent = '无记录';
-}
-
-// 点击span元素时进行跳转
-spanElement.addEventListener('click', () => {
-    if (lotw) {
-        // 直接使用lotw参数的值作为跳转的URL
-        window.location.href = lotw;
+    // 检查lotw参数的值是否以http或https开头，如果不是，则添加http前缀
+    if (lotw && !lotw.match(/^https?:\/\//i)) {
+        lotw = 'http://' + lotw;
     }
-});
+
+    // 将lotw的值赋给id为"lotw"的span元素
+    const spanElement = document.getElementById('lotw');
+    if (lotw) {
+        spanElement.textContent = '点击跳转>';
+        // 设置span元素的href属性为lotw参数的值，以便在点击时进行跳转
+        spanElement.href = lotw;
+    } else {
+        spanElement.textContent = '无记录';
+    }
+
+    // 点击span元素时进行跳转
+    spanElement.addEventListener('click', function(event) {
+        event.preventDefault(); // 阻止默认的链接跳转行为
+        if (lotw) {
+            // 使用JavaScript进行跳转，而不是HTML的href属性
+            window.location.href = lotw;
+        }
+    });
 
 
 function updateCallSignAndTitle() {
