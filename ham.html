@@ -254,7 +254,7 @@
 <script>
 
 // 正则表达式匹配lotw参数的值，假设lotw参数后面没有跟随&符号
-const lotwRegex = /lotw=([^&]+)/;
+const lotwRegex = /lotw=([^&]+)/i;
 const match = lotwRegex.exec(window.location.search);
 
 // 如果找到匹配项，则提取lotw参数的值
