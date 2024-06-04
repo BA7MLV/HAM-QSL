@@ -210,7 +210,7 @@
   <div class="container">
     <div class="card-container" onclick="this.classList.toggle('flip')">
     <img id="dynamicImage" alt="Dynamic Image" class="front-card"  alt="Front Card"> 
-      <!-- <img class="front-card" src="https://img2.imgtp.com/2024/04/02/4RQmk4a0.png" alt="Front Card"> -->
+      <!-- <img class="front-card" src="https://cdn.jsdelivr.net/gh/BA7MLV/HAM-QSL@main/QSL.png" alt="Front Card"> -->
       <canvas class="back-card" id="myCanvas" width="600" height="400"alt="Back Card"></canvas>
       <!-- 采用canvas生成 -->
     </div>
@@ -224,7 +224,7 @@
       </div>
       <!-- 添加图片标签 -->
     <div class="stamp-container">
-  <img class="rotated-image" src="https://img2.imgtp.com/2024/04/04/Vn5ZumnH.png" alt="Rotated Image">
+  <img class="rotated-image" src="https://cdn.jsdelivr.net/gh/BA7MLV/HAM-QSL@main/stamp.png" alt="Rotated Image">
 </div>
     </div>
   </div>
@@ -358,7 +358,7 @@ var ctx = canvas.getContext("2d");
 
 // 加载背景图像
 var backgroundImage = new Image();
-backgroundImage.src = "https://img2.imgtp.com/2024/04/04/zZHl00x7.png";
+backgroundImage.src = "https://cdn.jsdelivr.net/gh/BA7MLV/HAM-QSL@main/QSL2.png";
 // 在画布上绘制背景图像
 backgroundImage.onload = function() {
     ctx.drawImage(backgroundImage, 0, 0);
@@ -412,7 +412,7 @@ console.log(params);
 
 // 预先定义不同style值对应的图片链接
 const images = {
-  '1': 'https://s2.loli.net/2024/04/26/KdoVSGL3lIaDZ1c.png',//深圳钢结构博物馆
+  '1': 'https://cdn.jsdelivr.net/gh/BA7MLV/HAM-QSL@main/QSL.png',//深圳钢结构博物馆
   '2': 'https://img2.imgtp.com/2024/04/05/ytfqBu9u.png'//测试数据
   // 可以继续添加更多的style值和对应的图片链接
 };
