@@ -207,14 +207,14 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="card-container" onclick="this.classList.toggle('flip')">
-    <img id="dynamicImage" alt="Dynamic Image" class="front-card"  alt="Front Card"> 
-      <!-- <img class="front-card" src="https://cdn.jsdelivr.net/gh/BA7MLV/HAM-QSL@main/QSL.png" alt="Front Card"> -->
-      <canvas class="back-card" id="myCanvas" width="600" height="400"alt="Back Card"></canvas>
-      <!-- 采用canvas生成 -->
-    </div>
-  </div>
+    <div class="container">
+        <div class="card-container" onclick="this.classList.toggle('flip')">
+          <img id="dynamicImage" alt="Dynamic Image" class="front-card lazyload" 
+               src="" 
+               data-src="https://cdn.jsdelivr.net/gh/BA7MLV/HAM-QSL@main/QSL.png"> 
+          <canvas class="back-card" id="myCanvas" width="600" height="400" alt="Back Card"></canvas>
+        </div>
+      </div>
 
   <div class="background-square">
     <div class="call-sign-container" style="position: relative;"> <!-- 添加了样式 -->
@@ -250,7 +250,35 @@
   </div>
 </body>
 
+<script>
+    // 检查浏览器是否支持IntersectionObserver
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.getAttribute('data-src');
+            if (src) {
+              img.src = src;
+              img.classList.add('loaded'); // 添加loaded类，使图片可见
+              img.classList.remove('lazyload');
+              observer.unobserve(img); // 停止观察已加载的图片
+            }
+          }
+        });
+      }, {
+        rootMargin: '50px', // 预加载距离
+        threshold: 0.01
+      });
 
+      const images = document.querySelectorAll('img.lazyload');
+      images.forEach(img => {
+        observer.observe(img);
+      });
+    } else {
+      console.warn('IntersectionObserver is not supported in this browser.');
+    }
+  </script>
 <script>
 
 // 正则表达式匹配lotw参数的值，假设lotw参数后面没有跟随&符号
@@ -447,5 +475,54 @@ window.addEventListener('load', function() {
   // 页面加载完成后，模拟一个popstate事件来触发更新
   history.pushState(null, null, window.location.href);
 });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script> 
+<script>
+function randomInRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function triggerConfetti() {
+  var end = Date.now() + (5 * 1000);
+  (function frame() {
+    confetti({
+      particleCount: 1, // 减少粒子数量
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+    confetti({
+      particleCount: 1, // 减少粒子数量
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 }
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+
+  var duration = 6 * 1000;
+  var animationEnd = Date.now() + duration;
+  var defaults = { startVelocity: 30, spread: 360, ticks: 160, zIndex: 0 };
+
+  var interval = setInterval(function() {
+    
+    var timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    var particleCount = 20 * (timeLeft / duration); // 减少粒子数量
+    // since particles fall down, start a bit higher than random
+    confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+    confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+  }, 250);
+}
+
+// Trigger confetti on page load
+window.addEventListener('load', triggerConfetti);
 </script>
 </html>
